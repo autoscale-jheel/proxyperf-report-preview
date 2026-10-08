@@ -132,7 +132,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
     }
     .winner-card {
       border: 1.5px solid #e2e8f0;
@@ -352,6 +352,46 @@
       font-weight: 650;
       color: #0f172a;
     }
+
+    /* "What Each Metric Measures" 6-Box Grid (ScrapeOps Inspired) */
+    .methodology-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 16px 0 28px;
+    }
+    .method-card {
+      display: flex;
+      gap: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px;
+      background: #f8fafc;
+    }
+    .method-icon {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #dbeafe;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .method-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+    .method-desc {
+      font-size: 12.5px;
+      color: #475569;
+      line-height: 1.45;
+    }
     
     /* Insights Cards (ProxyVero "What We Found" Style) */
     .insights-grid {
@@ -425,11 +465,11 @@
   <div class="container">
     <div class="preview-banner">
       <div><b>Interactive Preview</b> · ProxyPerf Benchmark Report</div>
-      <div>Tested URL: bbc.com/news</div>
+      <div>Target URL: bbc.com/news</div>
     </div>
 
     <div class="report-card">
-      <!-- Email Header Header -->
+      <!-- Email Header -->
       <div class="email-meta">
         <div><span>From:</span> reports@proxyperf.com</div>
         <div class="subject"><span>Subject:</span> Performance Benchmark Report: https://www.bbc.com/news</div>
@@ -710,18 +750,74 @@
             </tbody>
           </table>
         </div>
-        <div style="font-size: 11.5px; color: #64748b; margin-bottom: 24px;">* Bright Data Residential: Target site verification succeeded (5/5), but the separate 10 MB payload throughput test failed.</div>
+        <div style="font-size: 11.5px; color: #64748b; margin-bottom: 30px;">* Bright Data Residential: Target site verification succeeded (5/5), but the separate 10 MB payload throughput test failed.</div>
+
+        <!-- "What Each Metric Measures" 6-Box Grid (ScrapeOps Inspired) -->
+        <div class="section-header">
+          <div class="section-title">🔍 What Each Benchmark Metric Measures</div>
+          <div class="section-subtitle">How ProxyPerf tests, verifies, and calculates performance indicators for custom destination URLs.</div>
+        </div>
+
+        <div class="methodology-grid">
+          <div class="method-card">
+            <div class="method-icon">✓</div>
+            <div>
+              <div class="method-title">Validated HTTP Delivery</div>
+              <div class="method-desc">Every request confirms that the target server returned a genuine HTTP 200–399 response, verifying there were no proxy dropped connections or 5xx gateway errors.</div>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-icon">✓</div>
+            <div>
+              <div class="method-title">Success Rate (Reliability)</div>
+              <div class="method-desc">The percentage of test attempts (out of 5 probes) that successfully reached and loaded the target without network timeouts or connection interruptions.</div>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-icon">✓</div>
+            <div>
+              <div class="method-title">Latency to First Byte (TTFB)</div>
+              <div class="method-desc">Measures the exact response time (in milliseconds) until the first byte of page content is received from the destination server through the proxy.</div>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-icon">✓</div>
+            <div>
+              <div class="method-title">Connect Overhead</div>
+              <div class="method-desc">Measures the handshake time taken to establish the proxy tunnel connection before making the outbound request to the destination website.</div>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-icon">✓</div>
+            <div>
+              <div class="method-title">Download Bandwidth (Speed)</div>
+              <div class="method-desc">Average network download throughput (Mb/s) tested via a standardized 10 MB payload transferred directly through the active proxy tunnel.</div>
+            </div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-icon">✓</div>
+            <div>
+              <div class="method-title">Multi-Cycle Probing</div>
+              <div class="method-desc">Tests run across 5 sequential attempts with a 10s connect timeout and 30s total timeout to prevent one-off flukes from skewing provider averages.</div>
+            </div>
+          </div>
+        </div>
 
         <!-- Visual Performance Benchmarks (Side by Side) -->
         <div class="section-header">
-          <div class="section-title">⚡ Latency & Bandwidth Comparisons</div>
+          <div class="section-title">⚡ Latency & Bandwidth Visual Benchmarks</div>
           <div class="section-subtitle">Visual distribution of response speeds across data center and residential pools.</div>
         </div>
 
         <div class="comparison-grid">
           <!-- Latency Bars -->
           <div class="chart-panel">
-            <div class="chart-panel-title">Latency to First Byte (Lower is better)</div>
+            <div class="chart-panel-title">Latency to First Byte (Lower is faster)</div>
             
             <div style="font-size:11px; font-weight:700; color:#64748b; margin:6px 0 4px;">DATA CENTER</div>
             <div class="bar-row top">
@@ -770,7 +866,7 @@
 
           <!-- Speed Bars -->
           <div class="chart-panel">
-            <div class="chart-panel-title">Download Throughput (Higher is better)</div>
+            <div class="chart-panel-title">Download Throughput (Higher is faster)</div>
 
             <div style="font-size:11px; font-weight:700; color:#64748b; margin:6px 0 4px;">DATA CENTER</div>
             <div class="bar-row top">
@@ -818,7 +914,7 @@
           </div>
         </div>
 
-        <!-- Structured Insights (ProxyVero "What the Data Says" Style) -->
+        <!-- Structured Insights (ProxyVero "What We Found" Style) -->
         <div class="section-header">
           <div class="section-title">💡 What the Benchmark Data Says</div>
           <div class="section-subtitle">Actionable takeaways from the 95 automated probes executed on this target.</div>
