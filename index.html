@@ -204,6 +204,48 @@
       font-variant-numeric: tabular-nums;
       text-align: right;
     }
+    .award-rule {
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--line-2);
+      border-top: none;
+      padding: 11px 24px;
+      background: #fafbfd;
+    }
+
+    /* Category leaders — other providers credited by measurement */
+    .standouts {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--line-2);
+      border-top: none;
+    }
+    .standout {
+      padding: 15px 18px 17px;
+      border-right: 1px solid var(--line-2);
+    }
+    .standout:last-child { border-right: none; }
+    .standout .award {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--faint);
+      line-height: 1.45;
+      margin-bottom: 7px;
+      min-height: 2.9em;
+    }
+    .standout .who {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 1px;
+    }
+    .standout .fig {
+      font-size: 12.5px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
 
     /* ── Data table ───────────────────────────────────────── */
     table.data {
@@ -449,6 +491,10 @@
 
     @media (max-width: 720px) {
       .figures, .verdicts, .findings, dl.defs { grid-template-columns: 1fr; }
+      .standouts { grid-template-columns: 1fr 1fr; }
+      .standout:nth-child(2) { border-right: none; }
+      .standout:nth-child(3), .standout:nth-child(4) { border-top: 1px solid var(--line-2); }
+      .standout .award { min-height: 0; }
       .verdict + .verdict { border-left: none; border-top: 1px solid var(--line-2); }
       .figure { border-right: none; border-bottom: 1px solid var(--line); }
       .masthead, .body, .envelope, .colophon { padding-left: 22px; padding-right: 22px; }
@@ -540,6 +586,36 @@
                 <div><dt>Download speed</dt><dd>47 Mb/s &nbsp;&middot;&nbsp; fastest res.</dd></div>
                 <div><dt>Blocks encountered</dt><dd>None &mdash; all HTTP 200</dd></div>
               </dl>
+            </div>
+          </div>
+
+          <p class="award-rule">
+            A provider is named best overall only when it leads reliability, response time
+            <em>and</em> download speed within its own class. On this target SquidProxies led all
+            three in both classes. The next strongest provider on each individual measurement is
+            named below.
+          </p>
+
+          <div class="standouts">
+            <div class="standout">
+              <div class="award">Next fastest response &mdash; data center</div>
+              <div class="who">IPRoyal DC</div>
+              <div class="fig">350 ms &nbsp;&middot;&nbsp; 100% success</div>
+            </div>
+            <div class="standout">
+              <div class="award">Next highest throughput &mdash; data center</div>
+              <div class="who">Bright Data DC</div>
+              <div class="fig">76 Mb/s &nbsp;&middot;&nbsp; 100% success</div>
+            </div>
+            <div class="standout">
+              <div class="award">Next fastest response &mdash; residential</div>
+              <div class="who">Evomi</div>
+              <div class="fig">808 ms &nbsp;&middot;&nbsp; 100% success</div>
+            </div>
+            <div class="standout">
+              <div class="award">Next highest throughput &mdash; residential</div>
+              <div class="who">PlainProxies</div>
+              <div class="fig">23 Mb/s &nbsp;&middot;&nbsp; 100% success</div>
             </div>
           </div>
         </section>
@@ -849,7 +925,7 @@
 
           <div class="recommendation">
             <div class="cat">Recommendation</div>
-            <p>Use <strong>SquidProxies Data Center</strong> for this target: it delivers the lowest response time and the highest throughput of any provider tested. If the workload specifically requires real residential IP addresses, <strong>SquidProxies Residential</strong> is the strongest option at 596 ms and 47 Mb/s.</p>
+            <p>Use <strong>SquidProxies Data Center</strong> for this target: it delivers the lowest response time and the highest throughput of any provider tested. If the workload specifically requires real residential IP addresses, <strong>SquidProxies Residential</strong> is the strongest option at 596 ms and 47 Mb/s. <strong>IPRoyal DC</strong> and <strong>Bright Data DC</strong> are both credible data center alternatives, each opening the page on all five attempts.</p>
           </div>
         </section>
 
