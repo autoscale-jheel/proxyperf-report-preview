@@ -232,11 +232,12 @@
       font-weight: 700;
       letter-spacing: 0.09em;
       text-transform: uppercase;
-      color: var(--faint);
-      line-height: 1.45;
+      line-height: 1.5;
       margin-bottom: 8px;
       flex: 1;
     }
+    .standout .award .metric { display: block; color: var(--accent); white-space: nowrap; }
+    .standout .award .pool { display: block; color: var(--faint); }
     .standout .who {
       font-size: 14px;
       font-weight: 700;
@@ -594,28 +595,28 @@
           <p class="award-rule">
             A provider is named best overall only when it leads reliability, response time
             <em>and</em> download speed within its own class. On this target SquidProxies led all
-            three in both classes. The next strongest provider on each individual measurement is
+            three in both classes. The second-placed provider on each individual measurement is
             named below.
           </p>
 
           <div class="standouts">
             <div class="standout">
-              <div class="award">Next fastest response &mdash; data center</div>
+              <div class="award"><span class="metric">#2 Response time</span><span class="pool">Data center</span></div>
               <div class="who">IPRoyal DC</div>
               <div class="fig">350 ms &nbsp;&middot;&nbsp; 100% success</div>
             </div>
             <div class="standout">
-              <div class="award">Next highest throughput &mdash; data center</div>
+              <div class="award"><span class="metric">#2 Download speed</span><span class="pool">Data center</span></div>
               <div class="who">Bright Data DC</div>
               <div class="fig">76 Mb/s &nbsp;&middot;&nbsp; 100% success</div>
             </div>
             <div class="standout">
-              <div class="award">Next fastest response &mdash; residential</div>
+              <div class="award"><span class="metric">#2 Response time</span><span class="pool">Residential</span></div>
               <div class="who">Evomi</div>
               <div class="fig">808 ms &nbsp;&middot;&nbsp; 100% success</div>
             </div>
             <div class="standout">
-              <div class="award">Next highest throughput &mdash; residential</div>
+              <div class="award"><span class="metric">#2 Download speed</span><span class="pool">Residential</span></div>
               <div class="who">PlainProxies</div>
               <div class="fig">23 Mb/s &nbsp;&middot;&nbsp; 100% success</div>
             </div>
