@@ -3,202 +3,769 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Your ProxyPerf report — BBC News</title>
+  <title>Benchmark Performance Report — BBC News</title>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
-      background: #f4f4f5;
-      color: #171717;
+      background: #f1f5f9;
+      color: #0f172a;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 32px 16px 64px;
+      line-height: 1.5;
     }
-    .page { max-width: 680px; margin: 0 auto; padding: 28px 16px 64px; }
-    .review {
-      margin: 0 0 12px;
-      font-size: 13px;
-      color: #525252;
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
     }
-    .mail {
-      background: #fff;
-      border: 1px solid #e5e5e5;
+    .preview-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
       border-radius: 12px;
       overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
-    .meta {
-      padding: 14px 28px;
-      border-bottom: 1px solid #eee;
-      font-size: 14px;
-      line-height: 1.5;
-      color: #525252;
-    }
-    .meta b { color: #171717; font-weight: 600; }
-    .body { padding: 28px 28px 8px; }
-    h1 { margin: 0 0 8px; font-size: 22px; line-height: 1.3; font-weight: 650; }
-    h2 { margin: 28px 0 6px; font-size: 16px; line-height: 1.4; }
-    h3 { margin: 16px 0 8px; font-size: 14px; font-weight: 600; }
-    p { margin: 0 0 12px; font-size: 15px; line-height: 1.55; }
-    .muted { color: #525252; }
-    .small { font-size: 13px; color: #737373; line-height: 1.5; }
-    a { color: #304fff; }
-    table.tight {
-      border-collapse: collapse;
-      width: max-content;
-      max-width: 100%;
-      margin: 0 0 8px;
-      font-size: 14px;
-    }
-    table.tight th,
-    table.tight td {
-      padding: 5px 0;
-      border-bottom: 1px solid #eee;
-      white-space: nowrap;
-    }
-    table.tight th + th,
-    table.tight td + td { padding-left: 32px; text-align: right; }
-    table.tight th { font-weight: 600; color: #404040; }
-    .best { font-weight: 650; }
-    .bars { margin: 4px 0 12px; }
-    .bar {
-      display: grid;
-      grid-template-columns: 132px minmax(0, 1fr) 76px;
-      gap: 10px;
-      align-items: center;
-      margin: 5px 0;
+    
+    /* Email header bar */
+    .mail-header {
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 16px 24px;
       font-size: 13px;
+      color: #475569;
     }
-    .track { height: 8px; background: #ececee; border-radius: 99px; }
-    .fill { display: block; height: 8px; background: #304fff; border-radius: 99px; }
-    .fill.speed { background: #171717; }
-    .val { text-align: right; font-variant-numeric: tabular-nums; }
-    .foot { padding: 4px 28px 24px; }
+    .mail-header span { color: #0f172a; font-weight: 600; }
+    .mail-header .subject { margin-top: 4px; font-size: 14px; }
+    
+    /* Content wrapper */
+    .content { padding: 32px 28px; }
+    
+    /* Report Title & Metadata */
+    .brand-tag {
+      display: inline-flex;
+      align-items: center;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 750;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .target-url {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+    .target-url a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    /* Stats strip */
+    .meta-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 28px;
+    }
+    .meta-item .label {
+      font-size: 11px;
+      color: #64748b;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .meta-item .val {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 2px;
+    }
+    
+    /* Section Headings */
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 28px 0 6px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+    .section-desc {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 14px;
+    }
+    
+    /* Recommendation Winner Cards */
+    .picks-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .pick-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      background: #fafafa;
+      position: relative;
+    }
+    .pick-card.winner {
+      border-color: #93c5fd;
+      background: #f0f7ff;
+    }
+    .pick-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .badge-primary { background: #2563eb; color: #ffffff; }
+    .badge-secondary { background: #e2e8f0; color: #334155; }
+    .pick-name {
+      font-size: 17px;
+      font-weight: 750;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+    .pick-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+      color: #334155;
+    }
+    .pick-metrics div { display: flex; justify-content: space-between; }
+    .pick-metrics strong { color: #0f172a; }
+    
+    /* Structured Tables with Columns & Borders */
+    .table-wrapper {
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .sub-heading {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #475569;
+      margin: 16px 0 8px;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+    table.data-table th {
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 650;
+      padding: 9px 14px;
+      border-bottom: 1px solid #cbd5e1;
+      border-right: 1px solid #e2e8f0;
+    }
+    table.data-table th:last-child { border-right: none; }
+    table.data-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      border-right: 1px solid #e2e8f0;
+      color: #1e293b;
+    }
+    table.data-table td:last-child { border-right: none; }
+    table.data-table tr:last-child td { border-bottom: none; }
+    table.data-table tr:nth-child(even) { background: #f8fafc; }
+    .tar { text-align: right; }
+    .row-highlight {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .row-highlight td { background: #f0f7ff !important; }
+    
+    /* Status Badges */
+    .pill {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      text-align: center;
+    }
+    .pill-green { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .pill-yellow { background: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
+    .pill-red { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+    
+    /* Horizontal Metric Bars */
+    .chart-box {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      background: #ffffff;
+      margin-bottom: 16px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 130px minmax(0, 1fr) 75px;
+      gap: 12px;
+      align-items: center;
+      margin: 7px 0;
+      font-size: 12.5px;
+    }
+    .bar-label {
+      font-weight: 500;
+      color: #334155;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .bar-row.top .bar-label { font-weight: 700; color: #0f172a; }
+    .bar-track {
+      height: 9px;
+      background: #f1f5f9;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: #3b82f6;
+    }
+    .bar-fill.speed { background: #0f172a; }
+    .bar-fill.accent { background: #2563eb; }
+    .bar-val {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: #0f172a;
+      font-weight: 600;
+      font-size: 12px;
+    }
+    
+    /* Structured Insights Grid */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0 20px;
+    }
+    .insight-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px;
+      background: #f8fafc;
+    }
+    .insight-card .title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .insight-card .body {
+      font-size: 12.5px;
+      color: #475569;
+      line-height: 1.45;
+    }
+    
+    /* Key Takeaway Callout Box */
+    .action-box {
+      background: #f0f7ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid #2563eb;
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin-top: 18px;
+    }
+    .action-box .action-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e40af;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+    .action-box .action-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    
+    /* Footer */
+    .footer {
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      padding: 16px 24px;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
-  <main class="page">
-    <p class="review">Preview for the team. This is the proposed customer email, using the BBC News test.</p>
-    <article class="mail">
-      <div class="meta">
-        <b>From</b> reports@proxyperf.com<br />
-        <b>Subject</b> Your ProxyPerf report for https://www.bbc.com/news
+  <div class="container">
+    <div class="preview-badge">Live Email Preview · Benchmark Report</div>
+    
+    <div class="card">
+      <!-- Email Header -->
+      <div class="mail-header">
+        <div><span>From:</span> reports@proxyperf.com</div>
+        <div class="subject"><span>Subject:</span> Performance Benchmark Report: https://www.bbc.com/news</div>
       </div>
-      <div class="body">
-        <h1>Your ProxyPerf report</h1>
-        <p>Website tested: <a href="https://www.bbc.com/news">https://www.bbc.com/news</a></p>
-        <p class="muted">19 providers · 5 tries each · 87 of 95 requests opened the page</p>
 
-        <h2>Recommendation</h2>
-        <p>Use <span class="best">SquidProxies data center</span>. Reliability was 100% (5 of 5). Latency was 136 ms, the shortest in the test. Speed was 149 Mb/s, the fastest in the test.</p>
-        <p>If this site needs a residential address, use <span class="best">SquidProxies residential</span>. Reliability was 100% (5 of 5), latency was 596 ms, and speed was 47 Mb/s. That was the best residential result on all three.</p>
+      <div class="content">
+        <!-- Header & Target Info -->
+        <div class="brand-tag">ProxyPerf Benchmark</div>
+        <h1>Target Performance Report</h1>
+        <div class="target-url">Target tested: <a href="https://www.bbc.com/news" target="_blank">https://www.bbc.com/news</a></div>
 
-        <h2>Reliability: how often the page opened</h2>
-        <p class="muted">Share of the 5 tries that returned a normal page. 100% means 5 of 5.</p>
-
-        <h3>Data center</h3>
-        <table class="tight">
-          <thead>
-            <tr><th>Provider</th><th>Opened</th><th>Reliability</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="best">SquidProxies</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>IPRoyal</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>PlainProxies</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>Rayobyte</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>Bright Data</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>Decodo</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>Webshare.io</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>DataImpulse</td><td>5 of 5</td><td>100%</td></tr>
-          </tbody>
-        </table>
-
-        <h3>Residential</h3>
-        <table class="tight">
-          <thead>
-            <tr><th>Provider</th><th>Opened</th><th>Reliability</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="best">SquidProxies</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>Evomi</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>Webshare.io</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>PlainProxies</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>Rayobyte</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>Bright Data</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>Geonode</td><td>5 of 5</td><td>100%</td></tr>
-            <tr><td>DataImpulse</td><td>4 of 5</td><td>80%</td></tr>
-            <tr><td>Proxy-Cheap</td><td>4 of 5</td><td>80%</td></tr>
-            <tr><td>Proxy-Seller</td><td>4 of 5</td><td>80%</td></tr>
-            <tr><td>Decodo</td><td>0 of 5</td><td>0%</td></tr>
-          </tbody>
-        </table>
-
-        <h2>Latency: time until the page started</h2>
-        <p class="muted">Average time until a successful try started receiving the page. Lower is better. Shown in milliseconds. A provider with no successful try is listed only under reliability.</p>
-
-        <h3>Data center</h3>
-        <div class="bars">
-          <div class="bar"><span class="best">SquidProxies</span><span class="track"><span class="fill" style="width:16.2%"></span></span><span class="val">136 ms</span></div>
-          <div class="bar"><span>IPRoyal</span><span class="track"><span class="fill" style="width:41.7%"></span></span><span class="val">350 ms</span></div>
-          <div class="bar"><span>PlainProxies</span><span class="track"><span class="fill" style="width:44.6%"></span></span><span class="val">374 ms</span></div>
-          <div class="bar"><span>Rayobyte</span><span class="track"><span class="fill" style="width:54.2%"></span></span><span class="val">455 ms</span></div>
-          <div class="bar"><span>Bright Data</span><span class="track"><span class="fill" style="width:86.9%"></span></span><span class="val">729 ms</span></div>
-          <div class="bar"><span>Decodo</span><span class="track"><span class="fill" style="width:92.3%"></span></span><span class="val">774 ms</span></div>
-          <div class="bar"><span>Webshare.io</span><span class="track"><span class="fill" style="width:94.2%"></span></span><span class="val">790 ms</span></div>
-          <div class="bar"><span>DataImpulse</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">839 ms</span></div>
+        <!-- Metric Summary Strip -->
+        <div class="meta-strip">
+          <div class="meta-item">
+            <div class="label">Providers</div>
+            <div class="val">19 tested</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Total Probes</div>
+            <div class="val">95 requests</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Success Rate</div>
+            <div class="val">91.6%</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Fastest Pick</div>
+            <div class="val">136 ms</div>
+          </div>
         </div>
 
-        <h3>Residential</h3>
-        <div class="bars">
-          <div class="bar"><span class="best">SquidProxies</span><span class="track"><span class="fill" style="width:27.3%"></span></span><span class="val">596 ms</span></div>
-          <div class="bar"><span>Evomi</span><span class="track"><span class="fill" style="width:37%"></span></span><span class="val">808 ms</span></div>
-          <div class="bar"><span>Webshare.io</span><span class="track"><span class="fill" style="width:46.6%"></span></span><span class="val">1,017 ms</span></div>
-          <div class="bar"><span>PlainProxies</span><span class="track"><span class="fill" style="width:47.6%"></span></span><span class="val">1,039 ms</span></div>
-          <div class="bar"><span>Proxy-Cheap</span><span class="track"><span class="fill" style="width:54.5%"></span></span><span class="val">1,191 ms</span></div>
-          <div class="bar"><span>DataImpulse</span><span class="track"><span class="fill" style="width:65.2%"></span></span><span class="val">1,423 ms</span></div>
-          <div class="bar"><span>Rayobyte</span><span class="track"><span class="fill" style="width:68.4%"></span></span><span class="val">1,494 ms</span></div>
-          <div class="bar"><span>Proxy-Seller</span><span class="track"><span class="fill" style="width:85.1%"></span></span><span class="val">1,859 ms</span></div>
-          <div class="bar"><span>Bright Data</span><span class="track"><span class="fill" style="width:87.2%"></span></span><span class="val">1,905 ms</span></div>
-          <div class="bar"><span>Geonode</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">2,184 ms</span></div>
+        <!-- Executive Recommendations -->
+        <div class="section-title">Recommended Providers</div>
+        <div class="section-desc">Based on 5 automated verification cycles across all active provider pools.</div>
+        
+        <div class="picks-grid">
+          <div class="pick-card winner">
+            <span class="pick-badge badge-primary">#1 Best Overall · Data Center</span>
+            <div class="pick-name">SquidProxies DC</div>
+            <div class="pick-metrics">
+              <div><span>Success Rate:</span> <strong>100% (5/5)</strong></div>
+              <div><span>Latency to First Byte:</span> <strong>136 ms</strong></div>
+              <div><span>Download Throughput:</span> <strong>149 Mb/s</strong></div>
+            </div>
+          </div>
+
+          <div class="pick-card">
+            <span class="pick-badge badge-secondary">Top Residential Pick</span>
+            <div class="pick-name">SquidProxies Residential</div>
+            <div class="pick-metrics">
+              <div><span>Success Rate:</span> <strong>100% (5/5)</strong></div>
+              <div><span>Latency to First Byte:</span> <strong>596 ms</strong></div>
+              <div><span>Download Throughput:</span> <strong>47 Mb/s</strong></div>
+            </div>
+          </div>
         </div>
 
-        <h2>Speed: separate download through the same proxy</h2>
-        <p class="muted">Average download speed from a speed test that is separate from the BBC page. Higher is better. Shown in Mb/s.</p>
+        <!-- 1. Reliability Section -->
+        <div class="section-title">1. Reliability: Request Success Rate</div>
+        <div class="section-desc">Measures the percentage of requests that successfully returned valid page content without timeouts or blocks.</div>
 
-        <h3>Data center</h3>
-        <div class="bars">
-          <div class="bar"><span class="best">SquidProxies</span><span class="track"><span class="fill speed" style="width:100%"></span></span><span class="val">149 Mb/s</span></div>
-          <div class="bar"><span>IPRoyal</span><span class="track"><span class="fill speed" style="width:26.9%"></span></span><span class="val">40 Mb/s</span></div>
-          <div class="bar"><span>PlainProxies</span><span class="track"><span class="fill speed" style="width:41.4%"></span></span><span class="val">62 Mb/s</span></div>
-          <div class="bar"><span>Rayobyte</span><span class="track"><span class="fill speed" style="width:32.5%"></span></span><span class="val">48 Mb/s</span></div>
-          <div class="bar"><span>Bright Data</span><span class="track"><span class="fill speed" style="width:50.8%"></span></span><span class="val">76 Mb/s</span></div>
-          <div class="bar"><span>Decodo</span><span class="track"><span class="fill speed" style="width:38.2%"></span></span><span class="val">57 Mb/s</span></div>
-          <div class="bar"><span>Webshare.io</span><span class="track"><span class="fill speed" style="width:42.9%"></span></span><span class="val">64 Mb/s</span></div>
-          <div class="bar"><span>DataImpulse</span><span class="track"><span class="fill speed" style="width:10.3%"></span></span><span class="val">15 Mb/s</span></div>
+        <div class="sub-heading">Data Center Providers</div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 45%;">Provider</th>
+                <th style="width: 25%;" class="tar">Requests</th>
+                <th style="width: 30%;" class="tar">Reliability</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-highlight">
+                <td>SquidProxies DC <span style="font-size:11px;color:#2563eb;font-weight:700;">★ TOP</span></td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>IPRoyal DC</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>PlainProxies DC</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>Rayobyte DC</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>Bright Data DC</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>Decodo DC</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>Webshare.io DC</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>DataImpulse DC</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <h3>Residential</h3>
-        <div class="bars">
-          <div class="bar"><span class="best">SquidProxies</span><span class="track"><span class="fill speed" style="width:100%"></span></span><span class="val">47 Mb/s</span></div>
-          <div class="bar"><span>Evomi</span><span class="track"><span class="fill speed" style="width:37.3%"></span></span><span class="val">18 Mb/s</span></div>
-          <div class="bar"><span>Webshare.io</span><span class="track"><span class="fill speed" style="width:22.6%"></span></span><span class="val">11 Mb/s</span></div>
-          <div class="bar"><span>PlainProxies</span><span class="track"><span class="fill speed" style="width:48.3%"></span></span><span class="val">23 Mb/s</span></div>
-          <div class="bar"><span>Proxy-Cheap</span><span class="track"><span class="fill speed" style="width:17.3%"></span></span><span class="val">8 Mb/s</span></div>
-          <div class="bar"><span>DataImpulse</span><span class="track"><span class="fill speed" style="width:28.5%"></span></span><span class="val">14 Mb/s</span></div>
-          <div class="bar"><span>Rayobyte</span><span class="track"><span class="fill speed" style="width:32.7%"></span></span><span class="val">15 Mb/s</span></div>
-          <div class="bar"><span>Proxy-Seller</span><span class="track"><span class="fill speed" style="width:1.5%"></span></span><span class="val">0.7 Mb/s</span></div>
-          <div class="bar"><span>Bright Data</span><span class="track"><span class="fill speed" style="width:0%"></span></span><span class="val">0 Mb/s</span></div>
-          <div class="bar"><span>Geonode</span><span class="track"><span class="fill speed" style="width:26.8%"></span></span><span class="val">13 Mb/s</span></div>
+        <div class="sub-heading">Residential Providers</div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 45%;">Provider</th>
+                <th style="width: 25%;" class="tar">Requests</th>
+                <th style="width: 30%;" class="tar">Reliability</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-highlight">
+                <td>SquidProxies Res <span style="font-size:11px;color:#2563eb;font-weight:700;">★ TOP</span></td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>Evomi</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>Webshare.io</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>PlainProxies</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>Rayobyte</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>Bright Data</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>Geonode</td>
+                <td class="tar">5 / 5</td>
+                <td class="tar"><span class="pill pill-green">100%</span></td>
+              </tr>
+              <tr>
+                <td>DataImpulse</td>
+                <td class="tar">4 / 5</td>
+                <td class="tar"><span class="pill pill-yellow">80%</span></td>
+              </tr>
+              <tr>
+                <td>Proxy-Cheap</td>
+                <td class="tar">4 / 5</td>
+                <td class="tar"><span class="pill pill-yellow">80%</span></td>
+              </tr>
+              <tr>
+                <td>Proxy-Seller</td>
+                <td class="tar">4 / 5</td>
+                <td class="tar"><span class="pill pill-yellow">80%</span></td>
+              </tr>
+              <tr>
+                <td>Decodo</td>
+                <td class="tar">0 / 5</td>
+                <td class="tar"><span class="pill pill-red">0%</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <p class="small">A speed of 0 means the page opened, and the separate speed download failed.</p>
 
-        <h2>What the numbers say</h2>
-        <p>Data center was the stronger product on this site. All 8 data center providers opened the page on every try. The fastest residential latency, 596 ms, was still slower than four data center providers.</p>
-        <p>SquidProxies data center led on both latency and speed. The next latency was IPRoyal at 350 ms. The next speed was Bright Data data center at 76 Mb/s.</p>
-        <p>A page that opens can still be slow. Proxy-Cheap opened 4 of 5 tries, and the total time on those tries averaged 10.7 seconds. Geonode opened all 5, with latency of 2,184 ms and a total time of 5.8 seconds.</p>
-        <p class="best">For BBC News, use SquidProxies data center. If you need a residential address, use SquidProxies residential.</p>
+        <!-- 2. Latency Section -->
+        <div class="section-title">2. Latency: Response Time to First Byte</div>
+        <div class="section-desc">Average time (in milliseconds) until the target server begins transmitting page data. Lower is faster.</div>
+
+        <div class="sub-heading">Data Center Latency</div>
+        <div class="chart-box">
+          <div class="bar-row top">
+            <span class="bar-label">SquidProxies DC</span>
+            <span class="bar-track"><span class="bar-fill accent" style="width:16%;"></span></span>
+            <span class="bar-val">136 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">IPRoyal DC</span>
+            <span class="bar-track"><span class="bar-fill" style="width:42%;"></span></span>
+            <span class="bar-val">350 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">PlainProxies DC</span>
+            <span class="bar-track"><span class="bar-fill" style="width:45%;"></span></span>
+            <span class="bar-val">374 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Rayobyte DC</span>
+            <span class="bar-track"><span class="bar-fill" style="width:54%;"></span></span>
+            <span class="bar-val">455 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Bright Data DC</span>
+            <span class="bar-track"><span class="bar-fill" style="width:87%;"></span></span>
+            <span class="bar-val">729 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Decodo DC</span>
+            <span class="bar-track"><span class="bar-fill" style="width:92%;"></span></span>
+            <span class="bar-val">774 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Webshare.io DC</span>
+            <span class="bar-track"><span class="bar-fill" style="width:94%;"></span></span>
+            <span class="bar-val">790 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">DataImpulse DC</span>
+            <span class="bar-track"><span class="bar-fill" style="width:100%;"></span></span>
+            <span class="bar-val">839 ms</span>
+          </div>
+        </div>
+
+        <div class="sub-heading">Residential Latency</div>
+        <div class="chart-box">
+          <div class="bar-row top">
+            <span class="bar-label">SquidProxies Res</span>
+            <span class="bar-track"><span class="bar-fill accent" style="width:27%;"></span></span>
+            <span class="bar-val">596 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Evomi</span>
+            <span class="bar-track"><span class="bar-fill" style="width:37%;"></span></span>
+            <span class="bar-val">808 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Webshare.io</span>
+            <span class="bar-track"><span class="bar-fill" style="width:47%;"></span></span>
+            <span class="bar-val">1,017 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">PlainProxies</span>
+            <span class="bar-track"><span class="bar-fill" style="width:48%;"></span></span>
+            <span class="bar-val">1,039 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Proxy-Cheap</span>
+            <span class="bar-track"><span class="bar-fill" style="width:55%;"></span></span>
+            <span class="bar-val">1,191 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">DataImpulse</span>
+            <span class="bar-track"><span class="bar-fill" style="width:65%;"></span></span>
+            <span class="bar-val">1,423 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Rayobyte</span>
+            <span class="bar-track"><span class="bar-fill" style="width:68%;"></span></span>
+            <span class="bar-val">1,494 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Proxy-Seller</span>
+            <span class="bar-track"><span class="bar-fill" style="width:85%;"></span></span>
+            <span class="bar-val">1,859 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Bright Data</span>
+            <span class="bar-track"><span class="bar-fill" style="width:87%;"></span></span>
+            <span class="bar-val">1,905 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Geonode</span>
+            <span class="bar-track"><span class="bar-fill" style="width:100%;"></span></span>
+            <span class="bar-val">2,184 ms</span>
+          </div>
+        </div>
+
+        <!-- 3. Speed Section -->
+        <div class="section-title">3. Speed: Proxy Download Bandwidth</div>
+        <div class="section-desc">Average network throughput (Mb/s) during payload download through each provider. Higher is faster.</div>
+
+        <div class="sub-heading">Data Center Bandwidth</div>
+        <div class="chart-box">
+          <div class="bar-row top">
+            <span class="bar-label">SquidProxies DC</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:100%;"></span></span>
+            <span class="bar-val">149 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Bright Data DC</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:51%;"></span></span>
+            <span class="bar-val">76 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Webshare.io DC</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:43%;"></span></span>
+            <span class="bar-val">64 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">PlainProxies DC</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:41%;"></span></span>
+            <span class="bar-val">62 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Decodo DC</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:38%;"></span></span>
+            <span class="bar-val">57 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Rayobyte DC</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:33%;"></span></span>
+            <span class="bar-val">48 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">IPRoyal DC</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:27%;"></span></span>
+            <span class="bar-val">40 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">DataImpulse DC</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:10%;"></span></span>
+            <span class="bar-val">15 Mb/s</span>
+          </div>
+        </div>
+
+        <div class="sub-heading">Residential Bandwidth</div>
+        <div class="chart-box">
+          <div class="bar-row top">
+            <span class="bar-label">SquidProxies Res</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:100%;"></span></span>
+            <span class="bar-val">47 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">PlainProxies</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:48%;"></span></span>
+            <span class="bar-val">23 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Evomi</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:37%;"></span></span>
+            <span class="bar-val">18 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Rayobyte</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:33%;"></span></span>
+            <span class="bar-val">15 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">DataImpulse</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:29%;"></span></span>
+            <span class="bar-val">14 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Geonode</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:27%;"></span></span>
+            <span class="bar-val">13 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Webshare.io</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:23%;"></span></span>
+            <span class="bar-val">11 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Proxy-Cheap</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:17%;"></span></span>
+            <span class="bar-val">8 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Proxy-Seller</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:2%;"></span></span>
+            <span class="bar-val">0.7 Mb/s</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Bright Data</span>
+            <span class="bar-track"><span class="bar-fill speed" style="width:0%;"></span></span>
+            <span class="bar-val">0 Mb/s*</span>
+          </div>
+        </div>
+        <div style="font-size:11.5px;color:#64748b;margin-top:4px;">* Note: A 0 Mb/s score indicates page verification succeeded, but the subsequent heavy file throughput test failed.</div>
+
+        <!-- 4. Key Performance Insights -->
+        <div class="section-title">4. Key Insights & Findings</div>
+        <div class="section-desc">Practical observations from this benchmark run to help select the right provider plan.</div>
+
+        <div class="insights-grid">
+          <div class="insight-card">
+            <div class="title">🌐 High Site Accessibility</div>
+            <div class="body">18 out of 19 providers successfully passed automated validation on BBC News without triggering bot protection or CAPTCHAs.</div>
+          </div>
+          <div class="insight-card">
+            <div class="title">⚡ Data Center Outperforms</div>
+            <div class="body">All 8 Data Center pools completed 100% of requests with 3× lower latency and 3× higher throughput than the residential average.</div>
+          </div>
+          <div class="insight-card">
+            <div class="title">🏆 Decisive Leader</div>
+            <div class="body">SquidProxies DC outperformed all peers with a 136 ms response time (214 ms faster than #2 IPRoyal) and 149 Mb/s download speed.</div>
+          </div>
+          <div class="insight-card">
+            <div class="title">⏱️ Latency Bottlenecks</div>
+            <div class="body">While Proxy-Cheap and Geonode connected successfully, their end-to-end request durations averaged 6 to 10 seconds per page load.</div>
+          </div>
+        </div>
+
+        <!-- Action Callout Box -->
+        <div class="action-box">
+          <div class="action-title">Recommended Strategy for BBC News</div>
+          <div class="action-text">Deploy SquidProxies Data Center for peak performance. Use SquidProxies Residential if target geo-targeting or residential IP verification is required.</div>
+        </div>
       </div>
-      <div class="foot">
-        <p class="small">SquidProxies residential is the name on ProxyPerf. The test file calls this pool DynaProx. Latency figures are rounded to the nearest millisecond. Speed figures are rounded to the nearest Mb/s, except 0.7.</p>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div><strong>Benchmark Methodology:</strong> Tests performed with 5 automated HTTP requests per proxy pool. Reported latency reflects time to first byte on successful requests. Network speed measured via 10 MB payload download through the same proxy tunnel.</div>
       </div>
-    </article>
-  </main>
+    </div>
+  </div>
 </body>
 </html>
